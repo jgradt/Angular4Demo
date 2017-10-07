@@ -1,21 +1,20 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 
-import { Customer } from './customer'
+import { ICustomer } from './customer'
+import { CustomerService } from "./customer.service";
 
 @Component({
-    selector: 'customer',
+    selector: 'customer-list',
     templateUrl: './customer-list.component.html'
 })
-export class CustomerListComponent {
-    public customers: Customer[];
+export class CustomerListComponent implements OnInit {
 
-    constructor() {
-        this.customers = [
-            { id: 1, firstName: 'John', lastName: 'Doe' },
-            { id: 2, firstName: 'Homer', lastName: 'Simpson' },
-            { id: 3, firstName: 'Marge', lastName: 'Simpson' },
-            { id: 4, firstName: 'Betty', lastName: 'White' },
-            { id: 5, firstName: 'Bob', lastName: 'Dylan' }
-        ];
+    public customers: ICustomer[];
+
+    constructor(private _customerService: CustomerService) { }
+
+    ngOnInit(): void {
+        this.customers = this._customerService.getAll();
     }
+
 }

@@ -1,5 +1,5 @@
-﻿export class Customer {
-    public id: number;
-    public firstName: string;
-    public lastName: string;
+﻿export interface ICustomer {
+    id: number;
+    firstName: string;
+    lastName: string;
 }

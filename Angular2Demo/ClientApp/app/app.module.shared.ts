@@ -12,6 +12,8 @@ import { CounterComponent } from './components/counter/counter.component';
 
 import { CustomerListComponent } from './components/customer/customer-list.component'
 
+import { CustomerService } from './components/customer/customer.service'
+
 
 @NgModule({
     declarations: [
@@ -35,6 +37,9 @@ import { CustomerListComponent } from './components/customer/customer-list.compo
             { path: 'customer', component: CustomerListComponent },
             { path: '**', redirectTo: 'home' }
         ])
+    ],
+    providers: [
+        CustomerService
     ]
 })
 export class AppModuleShared {
