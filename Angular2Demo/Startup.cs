@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Angular2Demo
 {
@@ -23,6 +24,13 @@ namespace Angular2Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            // see: https://elanderson.net/2017/10/swagger-and-swashbuckle-with-asp-net-core-2/
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Contacts API", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +60,13 @@ namespace Angular2Demo
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contacts API V1");
             });
         }
     }
