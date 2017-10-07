@@ -4,9 +4,9 @@ import { Customer } from './customer'
 
 @Component({
     selector: 'customer',
-    templateUrl: './customer.component.html'
+    templateUrl: './customer-list.component.html'
 })
-export class CustomerComponent {
+export class CustomerListComponent {
     public customers: Customer[];
 
     constructor() {
