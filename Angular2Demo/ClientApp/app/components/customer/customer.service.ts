@@ -1,17 +1,17 @@
-﻿import { Injectable } from '@angular/core'
+﻿import { Injectable, Inject } from '@angular/core'
+import { Http, Response } from '@angular/http';
+import { Observable } from "rxjs/Observable";
 
 import { ICustomer } from './customer'
 
 @Injectable()
 export class CustomerService {
 
-    getAll(): ICustomer[] {
-        return [
-            { id: 1, firstName: 'John', lastName: 'Doe' },
-            { id: 2, firstName: 'Homer', lastName: 'Simpson' },
-            { id: 3, firstName: 'Marge', lastName: 'Simpson' },
-            { id: 4, firstName: 'Betty', lastName: 'White' },
-            { id: 5, firstName: 'Bob', lastName: 'Dylan' }
-        ];
+    constructor(private _http: Http, @Inject('BASE_URL') private _baseUrl: string) { }
+
+    getAll(): Observable<Response> {
+
+        return this._http.get(this._baseUrl + 'api/customers');
+
     }
 }
