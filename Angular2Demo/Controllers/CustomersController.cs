@@ -30,6 +30,9 @@ namespace Angular2Demo.Controllers
         [HttpGet]
         public IEnumerable<CustomerModel> Get()
         {
+            //System.Threading.Thread.Sleep(1500);
+
+            // TODO: retrieve data using repository pattern and DI
             return _customers;
         }
 
