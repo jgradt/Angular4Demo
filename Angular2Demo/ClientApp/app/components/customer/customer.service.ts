@@ -14,4 +14,10 @@ export class CustomerService {
         return this._http.get(this._baseUrl + 'api/customers');
 
     }
+
+    getById(id: number): Observable<Response> {
+
+        return this._http.get(this._baseUrl + 'api/customers/' + id);
+
+    }
 }
