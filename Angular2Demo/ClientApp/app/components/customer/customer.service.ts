@@ -1,5 +1,5 @@
 ﻿import { Injectable, Inject } from '@angular/core'
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
 
 import { ICustomer } from './customer'
@@ -7,17 +7,17 @@ import { ICustomer } from './customer'
 @Injectable()
 export class CustomerService {
 
-    constructor(private _http: Http, @Inject('BASE_URL') private _baseUrl: string) { }
+    constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl: string) { }
 
-    getAll(): Observable<Response> {
+    getAll(): Observable<ICustomer[]> {
 
-        return this._http.get(this._baseUrl + 'api/customers');
+        return this._http.get<ICustomer[]>(this._baseUrl + 'api/customers');
 
     }
 
-    getById(id: number): Observable<Response> {
+    getById(id: number): Observable<ICustomer> {
 
-        return this._http.get(this._baseUrl + 'api/customers/' + id);
+        return this._http.get<ICustomer>(this._baseUrl + 'api/customers/' + id);
 
     }
 }

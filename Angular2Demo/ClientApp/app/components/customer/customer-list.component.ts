@@ -14,7 +14,7 @@ export class CustomerListComponent implements OnInit {
 
     ngOnInit(): void {
         this._customerService.getAll().subscribe(result => {
-            this.customers = result.json() as ICustomer[];
+            this.customers = result;
         }, error => console.error(error));
     }
 

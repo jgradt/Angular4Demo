@@ -18,7 +18,7 @@ export class CustomerEditComponent implements OnInit {
 
         // TODO: what do we display if id = -1?
         this._customerService.getById(id).subscribe(result => {
-            this.customer = result.json() as ICustomer;
+            this.customer = result;
         }, error => console.error(error));
     }
 
