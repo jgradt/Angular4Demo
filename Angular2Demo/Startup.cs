@@ -11,6 +11,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Angular2Demo.Data;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using FizzWare.NBuilder;
 
 namespace Angular2Demo
 {
@@ -93,12 +94,15 @@ namespace Angular2Demo
         {
             if (!dbContext.Customers.Any())
             {
-                dbContext.Customers.Add(new Data.Entities.Customer() { Id = 1, FirstName = "Jimmy", LastName = "Buffett", CreatedDate = new DateTime(2000, 1, 1), LastUpdatedDate = DateTime.Today });
-                dbContext.Customers.Add(new Data.Entities.Customer() { Id = 2, FirstName = "James", LastName = "Dean", CreatedDate = new DateTime(2000, 1, 1), LastUpdatedDate = DateTime.Today });
-                dbContext.Customers.Add(new Data.Entities.Customer() { Id = 3, FirstName = "Bobby", LastName = "Flay", CreatedDate = new DateTime(2000, 1, 1), LastUpdatedDate = DateTime.Today });
-                dbContext.Customers.Add(new Data.Entities.Customer() { Id = 4, FirstName = "Angelina", LastName = "Jolie", CreatedDate = new DateTime(2000, 1, 1), LastUpdatedDate = DateTime.Today });
-                dbContext.Customers.Add(new Data.Entities.Customer() { Id = 5, FirstName = "Frank", LastName = "Sinatra", CreatedDate = new DateTime(2000, 1, 1), LastUpdatedDate = DateTime.Today });
+                var customers = Builder<Data.Entities.Customer>.CreateListOfSize(15)
+                    .All()
+                        .With(c => c.FirstName = Faker.Name.First())
+                        .With(c => c.LastName = Faker.Name.Last())
+                        //.With(c => c.EmailAddress = Faker.Internet.Email())
+                        //.With(c => c.TelephoneNumber = Faker.Phone.Number())
+                    .Build();
 
+                dbContext.Customers.AddRange(customers.ToArray());
             }
 
             dbContext.SaveChanges();
