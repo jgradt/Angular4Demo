@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Angular2Demo.Models;
+using Angular2Demo.Data;
+using AutoMapper;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,18 +14,13 @@ namespace Angular2Demo.Controllers
     [Route("api/customers")]
     public class CustomersController : Controller
     {
-        List<CustomerModel> _customers;
+        private readonly ICustomerRepository customerRepository;
+        private readonly IMapper mapper;
 
-        public CustomersController()
+        public CustomersController(ICustomerRepository customerRepository, IMapper mapper)
         {
-            _customers = new List<CustomerModel>()
-            {
-                new CustomerModel(){ Id = 1, FirstName = "John", LastName = "Doe" },
-                new CustomerModel(){ Id = 2, FirstName = "Homer", LastName = "Simpson" },
-                new CustomerModel(){ Id = 3, FirstName = "Marge", LastName = "Simpson" },
-                new CustomerModel(){ Id = 4, FirstName = "Betty", LastName = "White" },
-                new CustomerModel(){ Id = 5, FirstName = "Jerry", LastName = "Seinfeld" }
-            };
+            this.customerRepository = customerRepository;
+            this.mapper = mapper;
         }
 
         // GET: api/values
@@ -32,15 +29,25 @@ namespace Angular2Demo.Controllers
         {
             //System.Threading.Thread.Sleep(1500);
 
-            // TODO: retrieve data using repository pattern and DI
-            return _customers;
+            var customers = customerRepository.GetAll();
+            var mappedData = mapper.Map<List<CustomerModel>>(customers);
+
+            return mappedData;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public CustomerModel Get(int id)
         {
-            return _customers.FirstOrDefault(c => c.Id == id);
+            var customer = customerRepository.GetById(id);
+            if(customer != null)
+            {
+                var mappedData = mapper.Map<CustomerModel>(customer);
+                return mappedData;
+            }
+
+            //TODO: should we return something else here?
+            return null;
         }
 
         // POST api/values
