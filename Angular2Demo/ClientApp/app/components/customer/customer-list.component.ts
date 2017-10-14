@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { ICustomer } from './customer'
-import { CustomerService } from "./customer.service";
+import { ICustomer } from '../../data-entities/customer'
+import { CustomerService } from "../../services/customer.service";
 
 @Component({
     templateUrl: './customer-list.component.html'

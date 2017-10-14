@@ -1,7 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core'
-import { ICustomer } from "./customer";
-import { CustomerService } from "./customer.service";
 import { ActivatedRoute } from "@angular/router";
+
+import { ICustomer } from '../../data-entities/customer'
+import { CustomerService } from "../../services/customer.service";
 
 @Component({
     templateUrl: './customer-edit.component.html'

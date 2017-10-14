@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\customer\customer-list.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\customer\customer.ts" />
+    <TypeScriptCompile Include="ClientApp\app\data-entities\customer.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

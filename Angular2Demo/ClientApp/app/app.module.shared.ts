@@ -12,7 +12,7 @@ import { CounterComponent } from './components/counter/counter.component';
 
 import { CustomerListComponent } from './components/customer/customer-list.component'
 import { CustomerEditComponent } from './components/customer/customer-edit.component'
-import { CustomerService } from './components/customer/customer.service'
+import { CustomerService } from './services/customer.service'
 
 
 @NgModule({

@@ -2,7 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
 
-import { ICustomer } from './customer'
+import { ICustomer } from '../data-entities/customer'
 
 @Injectable()
 export class CustomerService {
