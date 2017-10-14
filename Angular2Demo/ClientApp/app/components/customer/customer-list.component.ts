@@ -8,13 +8,17 @@ import { CustomerService } from "../../services/customer.service";
 })
 export class CustomerListComponent implements OnInit {
 
-    public customers: ICustomer[];
+    customers: ICustomer[];
+    isLoading: boolean;
 
     constructor(private _customerService: CustomerService) { }
 
     ngOnInit(): void {
+        this.isLoading = true;
+
         this._customerService.getAll().subscribe(result => {
             this.customers = result;
+            this.isLoading = false;
         }, error => console.error(error));
     }
 

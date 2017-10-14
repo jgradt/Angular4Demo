@@ -9,17 +9,21 @@ import { CustomerService } from "../../services/customer.service";
 })
 export class CustomerEditComponent implements OnInit {
 
-    public customer: ICustomer;
+    customer: ICustomer;
+    isLoading: boolean;
 
     constructor(private _customerService: CustomerService, private _route: ActivatedRoute) {}
 
     ngOnInit(): void {
+
+        this.isLoading = true;
 
         let id = +(this._route.snapshot.paramMap.get('id') || -1);
 
         // TODO: what do we display if id = -1?
         this._customerService.getById(id).subscribe(result => {
             this.customer = result;
+            this.isLoading = false;
         }, error => console.error(error));
     }
 
