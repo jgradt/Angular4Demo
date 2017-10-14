@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ClientApp\.angular-cli.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\customer\customer-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\customer\customer.ts" />
   </ItemGroup>
