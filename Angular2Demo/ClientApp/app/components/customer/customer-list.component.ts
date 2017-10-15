@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
+import { PagedData } from '../../data-entities/pagedData'
 import { ICustomer } from '../../data-entities/customer'
 import { CustomerService } from "../../services/customer.service";
 
@@ -8,6 +9,8 @@ import { CustomerService } from "../../services/customer.service";
 })
 export class CustomerListComponent implements OnInit {
 
+    data: PagedData<ICustomer>;
+    currentPage: number = 1;
     customers: ICustomer[];
     isLoading: boolean;
 
@@ -16,10 +19,24 @@ export class CustomerListComponent implements OnInit {
     ngOnInit(): void {
         this.isLoading = true;
 
-        this._customerService.getAll().subscribe(result => {
-            this.customers = result;
+        this.loadData();
+    }
+
+    loadData(): void {
+        this._customerService.getPaged(this.currentPage - 1, 10).subscribe(result => {
+            this.data = result;
+            this.currentPage = this.data.pageIndex + 1;
+            this.customers = result.data;
             this.isLoading = false;
         }, error => console.error(error));
+    }
+
+    pageChanged(event: any): void {
+        console.log('Page changed to: ' + event.page);
+        console.log('Number items per page: ' + event.itemsPerPage);
+
+        this.currentPage = event.page;
+        this.loadData();
     }
 
 }

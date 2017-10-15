@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Angular2Demo.Models;
 using Angular2Demo.Data;
 using AutoMapper;
+using Angular2Demo.Infrastructure;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,16 +24,23 @@ namespace Angular2Demo.Controllers
             this.mapper = mapper;
         }
 
-        // GET: api/values
+        // GET: api/customers
         [HttpGet]
-        public IEnumerable<CustomerModel> Get()
+        public PagedData<CustomerModel> Get(int pageIndex = 0, int pageSize = 10)
         {
             //System.Threading.Thread.Sleep(1500);
 
-            var customers = customerRepository.GetAll();
-            var mappedData = mapper.Map<List<CustomerModel>>(customers);
+            var data = customerRepository.GetPaged(pageIndex, pageSize);
+            var mappeData = new PagedData<CustomerModel>()
+            {
+                PageIndex = data.PageIndex,
+                PageSize = data.PageSize,
+                TotalPages = data.TotalPages,
+                TotalItems = data.TotalItems,
+                Data = mapper.Map<List<CustomerModel>>(data.Data)
+            };
 
-            return mappedData;
+            return mappeData;
         }
 
         // GET api/values/5

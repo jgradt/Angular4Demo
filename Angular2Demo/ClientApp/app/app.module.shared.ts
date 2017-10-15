@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+import { PaginationModule } from 'ngx-bootstrap';
+
 // app imports
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -32,7 +34,8 @@ import { CustomerService } from './services/customer.service'
             { path: 'customers', component: CustomerListComponent },
             { path: 'customers/:id', component: CustomerEditComponent },
             { path: '**', redirectTo: 'home' }
-        ])
+        ]),
+        PaginationModule.forRoot()
     ],
     providers: [
         CustomerService

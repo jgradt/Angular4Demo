@@ -94,7 +94,7 @@ namespace Angular2Demo
         {
             if (!dbContext.Customers.Any())
             {
-                var customers = Builder<Data.Entities.Customer>.CreateListOfSize(15)
+                var customers = Builder<Data.Entities.Customer>.CreateListOfSize(100)
                     .All()
                         .With(c => c.FirstName = Faker.Name.First())
                         .With(c => c.LastName = Faker.Name.Last())

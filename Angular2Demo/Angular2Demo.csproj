@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\customer\customer-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\data-entities\pagedData.ts" />
     <TypeScriptCompile Include="ClientApp\app\data-entities\customer.ts" />
   </ItemGroup>
 
