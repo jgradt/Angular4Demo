@@ -13,7 +13,6 @@ export class CustomerListComponent implements OnInit {
     data: PagedData<ICustomer>;
     public totalPages: number = 0;
     currentPage: number = 1;
-    customers: ICustomer[];
     isLoading: boolean;
 
     constructor(private _customerService: CustomerService) { }
@@ -28,7 +27,6 @@ export class CustomerListComponent implements OnInit {
         this._customerService.getPaged(this.currentPage - 1, 10).subscribe(result => {
             this.data = result;
             this.currentPage = this.data.pageIndex + 1;
-            this.customers = result.data;
             this.isLoading = false;
         }, error => console.error(error));
     }

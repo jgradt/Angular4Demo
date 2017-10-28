@@ -44,7 +44,7 @@ namespace WebApiDemo.Data
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 TotalItems = totalCount,
-                Data = paged.ToList()
+                Items = paged.ToList()
             };
 
             return data;

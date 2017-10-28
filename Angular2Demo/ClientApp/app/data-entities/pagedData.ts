@@ -2,5 +2,5 @@
     pageIndex: number;
     pageSize: number;
     totalItems: number;
-    data: TData[];
+    items: TData[];
 }

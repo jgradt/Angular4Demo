@@ -33,7 +33,7 @@ namespace WebApiDemo.Controllers
                 PageIndex = data.PageIndex,
                 PageSize = data.PageSize,
                 TotalItems = data.TotalItems,
-                Data = mapper.Map<List<CustomerModel>>(data.Data)
+                Items = mapper.Map<List<CustomerModel>>(data.Items)
             };
 
             return mappeData;
