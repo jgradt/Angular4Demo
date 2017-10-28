@@ -38,7 +38,8 @@ import { CustomerService } from './services/customer.service'
         PaginationModule.forRoot()
     ],
     providers: [
-        CustomerService
+        CustomerService,
+        { provide: 'BASE_API_URL', useValue: 'http://localhost:54618/' }
     ]
 })
 export class AppModuleShared {
