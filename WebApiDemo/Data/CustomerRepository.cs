@@ -43,7 +43,6 @@ namespace WebApiDemo.Data
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                TotalPages = (totalCount / pageSize) + ((totalCount % pageSize > 0) ? 1 : 0),
                 TotalItems = totalCount,
                 Data = paged.ToList()
             };
