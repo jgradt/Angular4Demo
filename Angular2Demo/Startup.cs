@@ -58,33 +58,5 @@ namespace Angular2Demo
                     defaults: new { controller = "Home", action = "Index" });
             });
 
-            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    var context = serviceScope.ServiceProvider.GetService<DemoDbContext>();
-            //    AddDatabaseSeedData(context);
-
-            //    var d = context.Customers.ToList();
-            //}
-
-            
-        }
-
-        //private void AddDatabaseSeedData(DemoDbContext dbContext)
-        //{
-        //    if (!dbContext.Customers.Any())
-        //    {
-        //        var customers = Builder<Data.Entities.Customer>.CreateListOfSize(100)
-        //            .All()
-        //                .With(c => c.FirstName = Faker.Name.First())
-        //                .With(c => c.LastName = Faker.Name.Last())
-        //                //.With(c => c.EmailAddress = Faker.Internet.Email())
-        //                //.With(c => c.TelephoneNumber = Faker.Phone.Number())
-        //            .Build();
-
-        //        dbContext.Customers.AddRange(customers.ToArray());
-        //    }
-
-        //    dbContext.SaveChanges();
-        //}
     }
 }

@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace WebApiDemo.Data
 {
+    //TODO: create base class
+
     public interface ICustomerRepository
     {
         List<Customer> GetAll();
         PagedData<Customer> GetPaged(int pageIndex, int pageSize);
         Customer GetById(int id);
+        Customer Add(Customer entity);
+        bool Update(int id, Customer entity);
+        bool Delete(int id);
     }
 
     public class CustomerRepository : ICustomerRepository
@@ -36,7 +41,7 @@ namespace WebApiDemo.Data
                 .Skip(pageIndex * pageSize).Take(pageSize);
 
             var totalCount = query.Count();
-            var data = new PagedData<Customer>()
+            var data = new PagedData<Customer>() //TODO: need constructor
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
@@ -51,6 +56,41 @@ namespace WebApiDemo.Data
         public Customer GetById(int id)
         {
             return dbContext.Customers.Find(id);
+        }
+
+        public Customer Add(Customer entity)
+        {
+            entity.Id = dbContext.Customers.Max(o => o.Id) + 1; //TODO: this is a hack for the in-memory database
+
+            dbContext.Customers.Add(entity);
+            var result = dbContext.SaveChanges();
+
+            return entity;
+        }
+
+        public bool Update(int id, Customer entity)
+        {
+            var existing = dbContext.Customers.Find(id);
+            if(existing == null)
+            {
+                return false;
+            }
+
+            existing.FirstName = entity.FirstName;
+            existing.LastName = entity.LastName;
+
+            var result = dbContext.SaveChanges();
+
+            return (result > 0);
+        }
+
+        public bool Delete(int id)
+        {
+            var existing = dbContext.Customers.Find(id);
+            dbContext.Customers.Remove(existing);
+            var result = dbContext.SaveChanges();
+
+            return (result > 0);
         }
     }
 }

@@ -7,6 +7,7 @@ using WebApiDemo.Models;
 using WebApiDemo.Data;
 using AutoMapper;
 using WebApiDemo.Infrastructure;
+using WebApiDemo.Data.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,7 +25,6 @@ namespace WebApiDemo.Controllers
             this.mapper = mapper;
         }
 
-        // GET: api/customers
         [HttpGet]
         public PagedData<CustomerModel> Get(int pageIndex = 0, int pageSize = 10)
         {
@@ -43,37 +43,61 @@ namespace WebApiDemo.Controllers
             return mappeData;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public CustomerModel Get(int id)
+        [HttpGet("{id}", Name = "GetCustomer")]
+        public IActionResult Get(int id)
         {
             var customer = customerRepository.GetById(id);
-            if(customer != null)
+            if(customer == null)
             {
-                var mappedData = mapper.Map<CustomerModel>(customer);
-                return mappedData;
+                return NotFound();
             }
 
-            //TODO: should we return something else here?
-            return null;
+            var mappedData = mapper.Map<CustomerModel>(customer);
+
+            return new ObjectResult(mappedData);
         }
 
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Create([FromBody] CustomerModel item)
         {
+            if (item == null)
+            {
+                return BadRequest();
+            }
+
+            if(!ModelState.IsValid)
+            {
+                //TODO: what do I return here? 
+            }
+
+            var mappedDataIn = mapper.Map<Customer>(item);
+            var result = customerRepository.Add(mappedDataIn);
+            var mappedDataOut = mapper.Map<CustomerModel>(result);
+
+            return CreatedAtRoute("GetCustomer", new { id = mappedDataOut.Id }, mappedDataOut);
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody]CustomerModel item)
         {
+            if (item == null || item.Id != id)
+            {
+                return BadRequest();
+            }
+
+            var mappedData = mapper.Map<Customer>(item);
+
+            customerRepository.Update(id, mappedData);
+
+            return new NoContentResult();
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            customerRepository.Delete(id);
+
+            return new NoContentResult();
         }
     }
 }
