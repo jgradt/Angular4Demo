@@ -26,9 +26,9 @@
     <div>
         <div class="row">
             <pagination [boundaryLinks]="true" [totalItems]="data.totalItems" [(ngModel)]="currentPage" [maxSize]="5" class="pagination-sm"
-                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (numPages)="totalPages = $event" (pageChanged)="pageChanged($event)"></pagination>
         </div>
-        <div class="row">Page: {{currentPage}} / {{data.totalPages}}</div>
+        <div class="row">Page: {{currentPage}} / {{totalPages}}</div>
     </div>
 
 </div>

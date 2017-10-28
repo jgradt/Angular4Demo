@@ -11,6 +11,7 @@ import { CustomerService } from "../../services/customer.service";
 export class CustomerListComponent implements OnInit {
 
     data: PagedData<ICustomer>;
+    public totalPages: number = 0;
     currentPage: number = 1;
     customers: ICustomer[];
     isLoading: boolean;
