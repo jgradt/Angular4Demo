@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Angular2Demo.Data
+namespace WebApiDemo.Data
 {
     public interface IDataEntity
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Angular2Demo.Data.Entities
+namespace WebApiDemo.Data.Entities
 {
     public class Customer : IDataEntity
     {

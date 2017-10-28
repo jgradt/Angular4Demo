@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Angular2Demo", "Angular2Demo\Angular2Demo.csproj", "{6EBCD7B9-A0F1-4E2F-B89F-9C3566AFEDAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiDemo", "WebApiDemo\WebApiDemo.csproj", "{57EB1393-97E3-4C79-9A3E-316FAED86D5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6EBCD7B9-A0F1-4E2F-B89F-9C3566AFEDAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EBCD7B9-A0F1-4E2F-B89F-9C3566AFEDAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EBCD7B9-A0F1-4E2F-B89F-9C3566AFEDAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57EB1393-97E3-4C79-9A3E-316FAED86D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57EB1393-97E3-4C79-9A3E-316FAED86D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57EB1393-97E3-4C79-9A3E-316FAED86D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57EB1393-97E3-4C79-9A3E-316FAED86D5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
