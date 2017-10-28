@@ -25,6 +25,8 @@ namespace WebApiDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddDbContext<DemoDbContext>(opt => opt.UseInMemoryDatabase("demoDb"));
 
             services.AddMvc();
@@ -47,6 +49,12 @@ namespace WebApiDemo
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder =>
+                builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                );
 
             app.UseMvc();
 

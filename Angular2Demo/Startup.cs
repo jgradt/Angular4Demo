@@ -57,6 +57,6 @@ namespace Angular2Demo
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
-
+        }
     }
 }

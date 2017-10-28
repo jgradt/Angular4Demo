@@ -8,17 +8,17 @@ import { PagedData } from '../data-entities/pagedData'
 @Injectable()
 export class CustomerService {
 
-    constructor(private _http: HttpClient, @Inject('BASE_URL') private _baseUrl: string) { }
+    constructor(private _http: HttpClient, @Inject('BASE_API_URL') private baseApiUrl: string) { }
 
     getPaged(pageIndex: number, pageSize: number): Observable<PagedData<ICustomer>> {
 
-        return this._http.get<PagedData<ICustomer>>(this._baseUrl + `api/customers?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+        return this._http.get<PagedData<ICustomer>>(this.baseApiUrl + `api/customers?pageIndex=${pageIndex}&pageSize=${pageSize}`);
 
     }
 
     getById(id: number): Observable<ICustomer> {
 
-        return this._http.get<ICustomer>(this._baseUrl + 'api/customers/' + id);
+        return this._http.get<ICustomer>(this.baseApiUrl + 'api/customers/' + id);
 
     }
 }
