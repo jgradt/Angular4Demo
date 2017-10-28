@@ -5,7 +5,8 @@ import { ICustomer } from '../../data-entities/customer'
 import { CustomerService } from "../../services/customer.service";
 
 @Component({
-    templateUrl: './customer-list.component.html'
+    templateUrl: './customer-list.component.html',
+    styleUrls: ['../../styles.css']
 })
 export class CustomerListComponent implements OnInit {
 
@@ -32,8 +33,8 @@ export class CustomerListComponent implements OnInit {
     }
 
     pageChanged(event: any): void {
-        console.log('Page changed to: ' + event.page);
-        console.log('Number items per page: ' + event.itemsPerPage);
+        //console.log('Page changed to: ' + event.page);
+        //console.log('Number items per page: ' + event.itemsPerPage);
 
         this.currentPage = event.page;
         this.loadData();

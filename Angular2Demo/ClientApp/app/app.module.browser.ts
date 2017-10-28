@@ -11,7 +11,7 @@ import { AppComponent } from './components/app/app.component';
     ],
     providers: [
         { provide: 'BASE_URL', useFactory: getBaseUrl },
-        { provide: 'BASE_API_URL', useFactory: getBaseApiUrl }
+        { provide: 'BASE_API_URL', useValue: 'http://localhost:54618/' }
     ]
 })
 export class AppModule {
@@ -21,6 +21,6 @@ export function getBaseUrl() {
     return document.getElementsByTagName('base')[0].href;
 }
 
-export function getBaseApiUrl() {
-    return 'http://localhost:54618/';
-}
+//export function getBaseApiUrl() {
+//    return 'http://localhost:54618/';
+//}
