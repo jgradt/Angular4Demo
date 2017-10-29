@@ -1,25 +1,26 @@
-﻿<h1>Edit Customer</h1>
+﻿<h1>{{pageTitle}}</h1>
 
 <p *ngIf="isLoading"><em>Loading...</em></p>
 
 <div class="container" *ngIf="customer">
-    <form>
+    <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+    <form class="form-horizontal" [formGroup]="customerForm" (ngSubmit)="submitForm()">
         <!-- TODO: fix bootstrap col widths for sm,md,lg -->
         <div class="form-group row">
-            <label for="inputFirstName" class="col-sm-2 col-form-label">First Name</label>
+            <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inputFirstName" name="inputFirstName" [(ngModel)]="customer.firstName" placeholder="John">
+                <input type="text" class="form-control" id="firstName" formControlName="firstName" placeholder="John">
             </div>
         </div>
         <div class="form-group row">
-            <label for="inputLastName" class="col-sm-2 col-form-label">Last Name</label>
+            <label for="lastName" class="col-sm-2 col-form-label">Last Name</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inputLastName" name="inputLastName" [(ngModel)]="customer.lastName" placeholder="Doe">
+                <input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder="Doe">
             </div>
         </div>
         <div class="form-group row">
             <div class="col-sm-4">
-                <button type="submit" class="btn btn-primary disabled">Save</button>
+                <button type="submit" class="btn btn-primary" [disabled]="!customerForm.valid">Save</button>
                 <button type="button" class="btn btn-default" [routerLink]="['/customers']">Cancel</button>
             </div>
         </div>

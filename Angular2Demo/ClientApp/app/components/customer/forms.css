@@ -1,0 +1,5 @@
+﻿input.ng-invalid {
+    border-style: solid;
+    border-left-color: darkred;
+    border-left-width: 5px;
+}

@@ -1,30 +1,119 @@
 ﻿import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { ActivatedRoute, Router } from "@angular/router";
 
 import { ICustomer } from '../../data-entities/customer'
 import { CustomerService } from "../../services/customer.service";
 
 @Component({
-    templateUrl: './customer-edit.component.html'
+    templateUrl: './customer-edit.component.html',
+    styleUrls: ['./forms.css']
 })
 export class CustomerEditComponent implements OnInit {
 
+    pageTitle = 'Edit Customer';
+    customerForm: FormGroup;
     customer: ICustomer;
     isLoading: boolean;
+    isEdit: boolean = true;
+    errorMessage: string;
 
-    constructor(private _customerService: CustomerService, private _route: ActivatedRoute) {}
+    constructor(private fb: FormBuilder,
+        private customerService: CustomerService,
+        private route: ActivatedRoute,
+        private router: Router) {
+
+    }
 
     ngOnInit(): void {
 
-        this.isLoading = true;
+        // initialize form
+        this.customerForm = this.fb.group({
+            firstName: ['', [Validators.required, Validators.maxLength(50)]],
+            lastName: ['', [Validators.required, Validators.maxLength(50)]]
+        });
 
-        let id = +(this._route.snapshot.paramMap.get('id') || -1);
+        // load data
+        let id = +(this.route.snapshot.paramMap.get('id') || -1);
+        this.loadCustomer(id);
+    }
 
-        // TODO: what do we display if id = -1?
-        this._customerService.getById(id).subscribe(result => {
-            this.customer = result;
-            this.isLoading = false;
-        }, error => console.error(error));
+    loadCustomer(id: number) : void {
+
+        if (id === 0) {
+            // new data
+            let customer: ICustomer = {
+                id: 0,
+                firstName: '',
+                lastName: ''
+            };
+
+            this.onDataRetrieved(customer);
+        } else {
+            // existing data (edit)
+            this.isLoading = true;
+            this.customerService.getById(id).subscribe(result =>
+                this.onDataRetrieved(result),
+                error => this.handleError(error));
+        }
+    }
+
+    onDataRetrieved(customer: ICustomer): void {
+        if (this.customerForm) {
+            this.customerForm.reset();
+        }
+        this.customer = customer;
+
+        if (this.customer.id === 0) {
+            this.pageTitle = 'Add Customer';
+            this.isEdit = false;
+        } else {
+            this.pageTitle = 'Edit Customer';
+            this.isEdit = true;
+        }
+
+        // Update the data on the form
+        this.customerForm.patchValue({
+            firstName: this.customer.firstName,
+            lastName: this.customer.lastName,
+        });
+
+        this.isLoading = false;
+    }
+
+    handleError(error: any) {
+        this.errorMessage = error;
+        this.isLoading = false;
+    }
+
+    submitForm(): void {
+        if (this.customerForm.dirty && this.customerForm.valid) {
+            // Copy the form values over the product object values
+            let o = Object.assign({}, this.customer, this.customerForm.value);
+
+            if (this.isEdit) {
+                this.customerService.update(o.id, o)
+                    .subscribe(
+                    () => this.onSaveComplete(),
+                    (error: any) => this.errorMessage = <any>error
+                    );
+            } else {
+                this.customerService.create(o)
+                    .subscribe(
+                    () => this.onSaveComplete(),
+                    (error: any) => this.errorMessage = <any>error
+                    );
+            }
+            
+        } else if (!this.customerForm.dirty) {
+            this.onSaveComplete();
+        }
+    }
+
+    onSaveComplete(): void {
+        // Reset the form to clear the flags
+        this.customerForm.reset();
+        this.router.navigate(['/customers']);
     }
 
 }
