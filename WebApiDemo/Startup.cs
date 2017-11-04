@@ -61,11 +61,14 @@ namespace WebApiDemo
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiDemo V1");
             });
 
-            // seed database with data
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            if (env.IsDevelopment())
             {
-                var dbContext = serviceScope.ServiceProvider.GetService<DemoDbContext>();
-                DatabaseInitializer.AddDatabaseSeedData(dbContext);
+                // seed database with data
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    var dbContext = serviceScope.ServiceProvider.GetService<DemoDbContext>();
+                    DatabaseInitializer.AddDatabaseSeedData(dbContext);
+                }
             }
             
         }
