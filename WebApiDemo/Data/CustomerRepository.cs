@@ -2,6 +2,8 @@
 using WebApiDemo.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace WebApiDemo.Data
 {
@@ -9,12 +11,12 @@ namespace WebApiDemo.Data
 
     public interface ICustomerRepository
     {
-        List<Customer> GetAll();
-        PagedData<Customer> GetPaged(int pageIndex, int pageSize);
-        Customer GetById(int id);
-        Customer Add(Customer entity);
-        bool Update(int id, Customer entity);
-        bool Delete(int id);
+        Task<List<Customer>> GetAllAsync();
+        Task<PagedData<Customer>> GetPagedAsync(int pageIndex, int pageSize);
+        Task<Customer> GetByIdAsync(int id);
+        Task<Customer> AddAsync(Customer entity);
+        Task<bool> UpdateAsync(int id, Customer entity);
+        Task<bool> DeleteAsync(int id);
     }
 
     public class CustomerRepository : ICustomerRepository
@@ -26,48 +28,48 @@ namespace WebApiDemo.Data
             this.dbContext = demoDbContext;
         }
 
-        public List<Customer> GetAll()
+        public async Task<List<Customer>> GetAllAsync()
         {
-            return dbContext.Customers.ToList();
+            return await dbContext.Customers.ToListAsync();
         }
 
-        public PagedData<Customer> GetPaged(int pageIndex, int pageSize)
+        public async Task<PagedData<Customer>> GetPagedAsync(int pageIndex, int pageSize)
         {
             var query = dbContext.Customers;
 
             var paged = query
                 .Skip(pageIndex * pageSize).Take(pageSize);
 
-            var totalCount = query.Count();
+            var totalCount = await query.CountAsync();
             var data = new PagedData<Customer>() //TODO: need constructor
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 TotalItems = totalCount,
-                Items = paged.ToList()
+                Items = await paged.ToListAsync()
             };
 
             return data;
         }
 
-        public Customer GetById(int id)
+        public async Task<Customer> GetByIdAsync(int id)
         {
-            return dbContext.Customers.Find(id);
+            return await dbContext.Customers.FindAsync(id);
         }
 
-        public Customer Add(Customer entity)
+        public async Task<Customer> AddAsync(Customer entity)
         {
             entity.Id = dbContext.Customers.Max(o => o.Id) + 1; //TODO: this is a hack for the in-memory database
 
             dbContext.Customers.Add(entity);
-            var result = dbContext.SaveChanges();
+            var result = await dbContext.SaveChangesAsync();
 
             return entity;
         }
 
-        public bool Update(int id, Customer entity)
+        public async Task<bool> UpdateAsync(int id, Customer entity)
         {
-            var existing = dbContext.Customers.Find(id);
+            var existing = await dbContext.Customers.FindAsync(id);
             if(existing == null)
             {
                 return false;
@@ -76,18 +78,19 @@ namespace WebApiDemo.Data
             existing.FirstName = entity.FirstName;
             existing.LastName = entity.LastName;
 
-            var result = dbContext.SaveChanges();
+            var result = await dbContext.SaveChangesAsync();
 
             return (result > 0);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var existing = dbContext.Customers.Find(id);
+            var existing = await dbContext.Customers.FindAsync(id);
             dbContext.Customers.Remove(existing);
-            var result = dbContext.SaveChanges();
+            var result = await dbContext.SaveChangesAsync();
 
             return (result > 0);
         }
+
     }
 }

@@ -5,6 +5,7 @@ using WebApiDemo.Data;
 using AutoMapper;
 using WebApiDemo.Infrastructure;
 using WebApiDemo.Data.Entities;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,11 +24,11 @@ namespace WebApiDemo.Controllers
         }
 
         [HttpGet]
-        public PagedData<CustomerModel> Get(int pageIndex = 0, int pageSize = 10)
+        public async Task<PagedData<CustomerModel>> Get(int pageIndex = 0, int pageSize = 10)
         {
             //System.Threading.Thread.Sleep(1500);
 
-            var data = customerRepository.GetPaged(pageIndex, pageSize);
+            var data = await customerRepository.GetPagedAsync(pageIndex, pageSize);
             var mappeData = new PagedData<CustomerModel>()
             {
                 PageIndex = data.PageIndex,
@@ -40,9 +41,9 @@ namespace WebApiDemo.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCustomer")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var customer = customerRepository.GetById(id);
+            var customer = await customerRepository.GetByIdAsync(id);
             if(customer == null)
             {
                 return NotFound();
@@ -54,7 +55,7 @@ namespace WebApiDemo.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CustomerModel item)
+        public async Task<IActionResult> Create([FromBody] CustomerModel item)
         {
             if (item == null)
             {
@@ -67,14 +68,14 @@ namespace WebApiDemo.Controllers
             }
 
             var mappedDataIn = mapper.Map<Customer>(item);
-            var result = customerRepository.Add(mappedDataIn);
+            var result = await customerRepository.AddAsync(mappedDataIn);
             var mappedDataOut = mapper.Map<CustomerModel>(result);
 
             return CreatedAtRoute("GetCustomer", new { id = mappedDataOut.Id }, mappedDataOut);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]CustomerModel item)
+        public async Task<IActionResult> Put(int id, [FromBody]CustomerModel item)
         {
             if (item == null || item.Id != id)
             {
@@ -83,15 +84,15 @@ namespace WebApiDemo.Controllers
 
             var mappedData = mapper.Map<Customer>(item);
 
-            customerRepository.Update(id, mappedData);
+            await customerRepository.UpdateAsync(id, mappedData);
 
             return new NoContentResult();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            customerRepository.Delete(id);
+            await customerRepository.DeleteAsync(id);
 
             return new NoContentResult();
         }
