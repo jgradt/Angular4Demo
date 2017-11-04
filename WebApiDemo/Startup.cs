@@ -6,6 +6,10 @@ using WebApiDemo.Data;
 using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.EntityFrameworkCore;
+using WebApiDemo.Infrastructure;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System;
 
 namespace WebApiDemo
 {
@@ -21,13 +25,37 @@ namespace WebApiDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var jwtConfigOptions = Configuration.GetSection("Jwt").Get<JwtConfigurationOptions>();
+            services.Configure<JwtConfigurationOptions>(Configuration.GetSection("Jwt"));
+
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            })
+            .AddJwtBearer("JwtBearer", jwtBearerOptions =>
+            {
+                jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfigOptions.SecretKey)),
+
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtConfigOptions.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtConfigOptions.Audience,
+
+                    ValidateLifetime = true, //validate the expiration and not before values in the token
+
+                    ClockSkew = TimeSpan.FromMinutes(5) //5 minute tolerance for the expiration date
+                };
+            });
+
             services.AddCors();
 
             services.AddDbContext<DemoDbContext>(opt => opt.UseInMemoryDatabase("demoDb"));
 
             services.AddMvc();
-
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             services.AddAutoMapper();
 
@@ -35,7 +63,20 @@ namespace WebApiDemo
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "WebApiDemo API", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
             });
+
+            //register types for DI
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddSingleton<AppConfig, AppConfig>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,11 +87,14 @@ namespace WebApiDemo
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder =>
-                builder.AllowAnyOrigin()
+            app.UseAuthentication();
+
+            app.UseCors(policyBuilder =>
+                policyBuilder.AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                );
+                    .AllowCredentials()
+            );
 
             app.UseMvc();
 
