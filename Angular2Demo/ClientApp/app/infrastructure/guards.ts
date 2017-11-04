@@ -1,13 +1,15 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
+import { AppConfig } from './app.config'
+
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private config: AppConfig) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (localStorage.getItem('currentToken')) {
+        if (localStorage.getItem(this.config.authTokenName)) {
             // logged in so return true
             return true;
         }

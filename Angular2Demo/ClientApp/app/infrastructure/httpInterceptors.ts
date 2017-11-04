@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 
+import { AppConfig } from './app.config'
+
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor() { }
+    constructor(private config: AppConfig) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Get the auth header from the service.
-        const token = localStorage.getItem('currentToken');
+        const token = localStorage.getItem(this.config.authTokenName);
 
         if (token) {
             // Clone the request to add the new header.

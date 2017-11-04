@@ -12,14 +12,14 @@ export class AuthenticationService {
     login(username: string, password: string): Observable<boolean> {
         return this.http.post<AuthToken>(this.config.apiBaseUrl + 'token', { userName: username, password: password })
             .do(result => {
-                localStorage.setItem('currentToken', result.token);
+                localStorage.setItem(this.config.authTokenName, result.token);
             })
             .map(result => true);
     }
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentToken');
+        localStorage.removeItem(this.config.authTokenName);
     }
 }
 

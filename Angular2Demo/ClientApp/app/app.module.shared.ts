@@ -48,7 +48,6 @@ import { AuthGuard } from './infrastructure/guards'
     providers: [
         CustomerService,
         AuthenticationService,
-        { provide: 'BASE_API_URL', useValue: 'http://localhost:54618/' }, //TODO: get rid of this
         AppConfig,
         AuthGuard,
         { provide: HTTP_INTERCEPTORS, useClass: TimingInterceptor, multi: true },
