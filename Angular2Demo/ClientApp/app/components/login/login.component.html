@@ -1,0 +1,32 @@
+<form [formGroup]="mainForm" (ngSubmit)="login()" class="form-horizontal" novalidate>
+
+    <div>
+        <div *ngIf="isLoading">
+            Loading...
+        </div>
+
+        <div *ngIf="model" [hidden]="submitted" style="margin: 20px;">
+
+            <div class="form-group form-group-sm row" [ngClass]="{'has-error': mainForm.get('username').invalid}">
+                <label for="username" class="col-md-4 control-label">User Name:</label>
+                <div class="col-md-8">
+                    <input class="form-control" formControlName="username" />
+                    <!--<control-validator [for]="mainForm.get('username')"></control-validator>-->
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm row" [ngClass]="{'has-error': mainForm.get('password').invalid}">
+                <label for="password" class="col-md-4 control-label">Password:</label>
+                <div class="col-md-8">
+                    <input class="form-control" formControlName="password" />
+                    <!--<control-validator [for]="mainForm.get('password')"></control-validator>-->
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="submit" class="btn btn-primary pull-right">Login</button>
+            </div>
+
+        </div>
+    </div>
+</form>

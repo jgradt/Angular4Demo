@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { PaginationModule } from 'ngx-bootstrap';
 
@@ -13,8 +14,12 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { CustomerListComponent } from './components/customer/customer-list.component'
 import { CustomerEditComponent } from './components/customer/customer-edit.component'
-import { CustomerService } from './services/customer.service'
-
+import { CustomerService } from './services/customer.service';
+import { LoginComponent } from './components/login/login.component'
+import { AppConfig } from './infrastructure/app.config'
+import { TimingInterceptor, AuthInterceptor } from './infrastructure/httpInterceptors';
+import { AuthenticationService } from './services/authentication.service';
+import { AuthGuard } from './infrastructure/guards'
 
 @NgModule({
     declarations: [
@@ -22,7 +27,8 @@ import { CustomerService } from './services/customer.service'
         NavMenuComponent,
         HomeComponent,
         CustomerListComponent,
-        CustomerEditComponent
+        CustomerEditComponent,
+        LoginComponent
     ],
     imports: [
         CommonModule,
@@ -31,16 +37,22 @@ import { CustomerService } from './services/customer.service'
         ReactiveFormsModule,
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: 'login', component: LoginComponent },
             { path: 'home', component: HomeComponent },
-            { path: 'customers', component: CustomerListComponent },
-            { path: 'customers/:id', component: CustomerEditComponent },
+            { path: 'customers', component: CustomerListComponent, canActivate: [AuthGuard] },
+            { path: 'customers/:id', component: CustomerEditComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'home' }
         ]),
         PaginationModule.forRoot()
     ],
     providers: [
         CustomerService,
-        { provide: 'BASE_API_URL', useValue: 'http://localhost:54618/' }
+        AuthenticationService,
+        { provide: 'BASE_API_URL', useValue: 'http://localhost:54618/' }, //TODO: get rid of this
+        AppConfig,
+        AuthGuard,
+        { provide: HTTP_INTERCEPTORS, useClass: TimingInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
     ]
 })
 export class AppModuleShared {

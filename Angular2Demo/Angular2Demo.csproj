@@ -23,6 +23,9 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\customer\customer.ts" />
+    <None Remove="ClientApp\app\infrastructure\app.config.ts" />
+    <None Remove="ClientApp\app\infrastructure\guards.ts" />
+    <None Remove="ClientApp\app\infrastructure\httpInterceptors.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +36,9 @@
     <TypeScriptCompile Include="ClientApp\app\components\customer\customer-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\data-entities\pagedData.ts" />
     <TypeScriptCompile Include="ClientApp\app\data-entities\customer.ts" />
+    <TypeScriptCompile Include="ClientApp\app\infrastructure\app.config.ts" />
+    <TypeScriptCompile Include="ClientApp\app\infrastructure\guards.ts" />
+    <TypeScriptCompile Include="ClientApp\app\infrastructure\httpInterceptors.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
