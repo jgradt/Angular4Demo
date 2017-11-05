@@ -25,8 +25,8 @@ namespace WebApiDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var jwtConfigOptions = Configuration.GetSection("Jwt").Get<JwtConfigurationOptions>();
-            services.Configure<JwtConfigurationOptions>(Configuration.GetSection("Jwt"));
+            var appSettings = Configuration.GetSection("App").Get<AppSettings>();
+            services.Configure<AppSettings>(Configuration.GetSection("App"));
 
             services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = "JwtBearer";
@@ -37,13 +37,13 @@ namespace WebApiDemo
                 jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfigOptions.SecretKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Jwt.SecretKey)),
 
                     ValidateIssuer = true,
-                    ValidIssuer = jwtConfigOptions.Issuer,
+                    ValidIssuer = appSettings.Jwt.Issuer,
 
                     ValidateAudience = true,
-                    ValidAudience = jwtConfigOptions.Audience,
+                    ValidAudience = appSettings.Jwt.Audience,
 
                     ValidateLifetime = true, //validate the expiration and not before values in the token
 

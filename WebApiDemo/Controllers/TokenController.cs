@@ -39,7 +39,7 @@ namespace WebApiDemo.Controllers
 
         private object GenerateToken(string username)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appConfig.JwtOptions.SecretKey));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appConfig.Settings.Jwt.SecretKey));
 
             //TODO: send back retrieved claims
             var claims = new Claim[]
@@ -50,8 +50,8 @@ namespace WebApiDemo.Controllers
             };
 
             var token = new JwtSecurityToken(
-                issuer: appConfig.JwtOptions.Issuer,
-                audience: appConfig.JwtOptions.Audience,
+                issuer: appConfig.Settings.Jwt.Issuer,
+                audience: appConfig.Settings.Jwt.Audience,
                 claims: claims,
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddDays(2),

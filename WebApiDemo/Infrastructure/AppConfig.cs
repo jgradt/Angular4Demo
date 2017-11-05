@@ -16,11 +16,11 @@ namespace WebApiDemo.Infrastructure
             this.configuration = configuration;
         }
 
-        public JwtConfigurationOptions JwtOptions
+        public AppSettings Settings
         {
             get
             {
-                return configuration.GetSection("Jwt").Get<JwtConfigurationOptions>();
+                return configuration.GetSection("App").Get<AppSettings>();
             }
         }
     }
