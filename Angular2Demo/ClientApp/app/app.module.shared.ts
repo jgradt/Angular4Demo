@@ -19,7 +19,8 @@ import { LoginComponent } from './components/login/login.component'
 import { AppConfig } from './infrastructure/app.config'
 import { TimingInterceptor, AuthInterceptor } from './infrastructure/httpInterceptors';
 import { AuthenticationService } from './services/authentication.service';
-import { AuthGuard } from './infrastructure/guards'
+import { AuthGuard } from './infrastructure/guards';
+import { ValidationMessageComponent } from './components/shared/validation-message.component'
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { AuthGuard } from './infrastructure/guards'
         HomeComponent,
         CustomerListComponent,
         CustomerEditComponent,
-        LoginComponent
+        LoginComponent,
+        ValidationMessageComponent
     ],
     imports: [
         CommonModule,

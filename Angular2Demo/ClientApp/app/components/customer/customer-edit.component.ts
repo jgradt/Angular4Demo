@@ -12,7 +12,7 @@ import { CustomerService } from "../../services/customer.service";
 export class CustomerEditComponent implements OnInit {
 
     pageTitle = 'Edit Customer';
-    customerForm: FormGroup;
+    mainForm: FormGroup;
     customer: ICustomer;
     isLoading: boolean;
     isEdit: boolean = true;
@@ -28,7 +28,7 @@ export class CustomerEditComponent implements OnInit {
     ngOnInit(): void {
 
         // initialize form
-        this.customerForm = this.fb.group({
+        this.mainForm = this.fb.group({
             firstName: ['', [Validators.required, Validators.maxLength(50)]],
             lastName: ['', [Validators.required, Validators.maxLength(50)]]
         });
@@ -59,8 +59,8 @@ export class CustomerEditComponent implements OnInit {
     }
 
     onDataRetrieved(customer: ICustomer): void {
-        if (this.customerForm) {
-            this.customerForm.reset();
+        if (this.mainForm) {
+            this.mainForm.reset();
         }
         this.customer = customer;
 
@@ -73,7 +73,7 @@ export class CustomerEditComponent implements OnInit {
         }
 
         // Update the data on the form
-        this.customerForm.patchValue({
+        this.mainForm.patchValue({
             firstName: this.customer.firstName,
             lastName: this.customer.lastName,
         });
@@ -87,32 +87,30 @@ export class CustomerEditComponent implements OnInit {
     }
 
     submitForm(): void {
-        if (this.customerForm.dirty && this.customerForm.valid) {
-            // Copy the form values over the product object values
-            let o = Object.assign({}, this.customer, this.customerForm.value);
+        if (this.mainForm.dirty && this.mainForm.valid) {
+
+            let o = Object.assign({}, this.customer, this.mainForm.value);
 
             if (this.isEdit) {
-                this.customerService.update(o.id, o)
-                    .subscribe(
+                this.customerService.update(o.id, o).subscribe(
                     () => this.onSaveComplete(),
                     (error: any) => this.errorMessage = <any>error
                     );
             } else {
-                this.customerService.create(o)
-                    .subscribe(
+                this.customerService.create(o).subscribe(
                     () => this.onSaveComplete(),
                     (error: any) => this.errorMessage = <any>error
                     );
             }
             
-        } else if (!this.customerForm.dirty) {
+        } else if (!this.mainForm.dirty) {
             this.onSaveComplete();
         }
     }
 
     onSaveComplete(): void {
         // Reset the form to clear the flags
-        this.customerForm.reset();
+        this.mainForm.reset();
         this.router.navigate(['/customers']);
     }
 
