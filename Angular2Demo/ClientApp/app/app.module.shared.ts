@@ -10,17 +10,16 @@ import { PaginationModule } from 'ngx-bootstrap';
 
 // app imports
 import { AppComponent } from './components/app/app.component';
+
+import { TimingInterceptor, AuthInterceptor, AuthGuard, AppConfig } from './infrastructure/index';
+import { CustomerService, AuthenticationService } from './services/index';
+import { ValidationMessageComponent } from './components/shared/index'
+
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
 import { CustomerListComponent } from './components/customer/customer-list.component'
 import { CustomerEditComponent } from './components/customer/customer-edit.component'
-import { CustomerService } from './services/customer.service';
 import { LoginComponent } from './components/login/login.component'
-import { AppConfig } from './infrastructure/app.config'
-import { TimingInterceptor, AuthInterceptor } from './infrastructure/httpInterceptors';
-import { AuthenticationService } from './services/authentication.service';
-import { AuthGuard } from './infrastructure/guards';
-import { ValidationMessageComponent } from './components/shared/validation-message.component'
 
 @NgModule({
     declarations: [

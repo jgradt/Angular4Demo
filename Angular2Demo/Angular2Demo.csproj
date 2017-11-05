@@ -23,9 +23,13 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\customer\customer.ts" />
+    <None Remove="ClientApp\app\components\shared\index.ts" />
+    <None Remove="ClientApp\app\data-entities\index.ts" />
     <None Remove="ClientApp\app\infrastructure\app.config.ts" />
     <None Remove="ClientApp\app\infrastructure\guards.ts" />
     <None Remove="ClientApp\app\infrastructure\httpInterceptors.ts" />
+    <None Remove="ClientApp\app\infrastructure\index.ts" />
+    <None Remove="ClientApp\app\services\index.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,15 +38,15 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\customer\customer-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\shared\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\data-entities\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\data-entities\pagedData.ts" />
     <TypeScriptCompile Include="ClientApp\app\data-entities\customer.ts" />
     <TypeScriptCompile Include="ClientApp\app\infrastructure\app.config.ts" />
     <TypeScriptCompile Include="ClientApp\app\infrastructure\guards.ts" />
     <TypeScriptCompile Include="ClientApp\app\infrastructure\httpInterceptors.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\app\components\shared\" />
+    <TypeScriptCompile Include="ClientApp\app\infrastructure\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\index.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

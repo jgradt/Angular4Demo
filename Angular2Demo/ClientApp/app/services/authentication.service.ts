@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/do'
 
-import { AppConfig } from '../infrastructure/app.config';
+import { AppConfig } from '../infrastructure/index';
 
 @Injectable()
 export class AuthenticationService {
@@ -23,6 +23,7 @@ export class AuthenticationService {
     }
 }
 
+//TODO: move this to a different file
 export interface AuthToken {
     token: string;
 }

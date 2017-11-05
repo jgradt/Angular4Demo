@@ -1,8 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { PagedData } from '../../data-entities/pagedData'
-import { ICustomer } from '../../data-entities/customer'
-import { CustomerService } from "../../services/customer.service";
+import { PagedData, ICustomer } from '../../data-entities/index'
+import { CustomerService } from "../../services/index";
 
 @Component({
     templateUrl: './customer-list.component.html',

@@ -2,9 +2,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs/Observable";
 
-import { ICustomer } from '../data-entities/customer'
-import { PagedData } from '../data-entities/pagedData'
-import { AppConfig } from '../infrastructure/app.config'
+import { PagedData, ICustomer } from '../data-entities/index'
+import { AppConfig } from '../infrastructure/index'
 
 @Injectable()
 export class CustomerService {

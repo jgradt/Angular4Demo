@@ -2,8 +2,8 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { ICustomer } from '../../data-entities/customer'
-import { CustomerService } from "../../services/customer.service";
+import { ICustomer } from '../../data-entities/index'
+import { CustomerService } from "../../services/index";
 
 @Component({
     templateUrl: './customer-edit.component.html',
