@@ -26,17 +26,17 @@ namespace WebApiDemo.Controllers
         }
 
         [HttpGet]
-        public async Task<PagedData<CustomerModel>> Get(int pageIndex = 0, int pageSize = 10)
+        public async Task<PagedData<CustomerDto>> Get(int pageIndex = 0, int pageSize = 10)
         {
             //System.Threading.Thread.Sleep(1500);
 
             var data = await customerRepository.GetPagedAsync(pageIndex, pageSize);
-            var mappeData = new PagedData<CustomerModel>()
+            var mappeData = new PagedData<CustomerDto>()
             {
                 PageIndex = data.PageIndex,
                 PageSize = data.PageSize,
                 TotalItems = data.TotalItems,
-                Items = mapper.Map<List<CustomerModel>>(data.Items)
+                Items = mapper.Map<List<CustomerDto>>(data.Items)
             };
 
             return mappeData;
@@ -51,13 +51,13 @@ namespace WebApiDemo.Controllers
                 return NotFound();
             }
 
-            var mappedData = mapper.Map<CustomerModel>(customer);
+            var mappedData = mapper.Map<CustomerDto>(customer);
 
             return new ObjectResult(mappedData);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CustomerModel item)
+        public async Task<IActionResult> Create([FromBody] CustomerDto item)
         {
             if (item == null)
             {
@@ -71,13 +71,13 @@ namespace WebApiDemo.Controllers
 
             var mappedDataIn = mapper.Map<Customer>(item);
             var result = await customerRepository.AddAsync(mappedDataIn);
-            var mappedDataOut = mapper.Map<CustomerModel>(result);
+            var mappedDataOut = mapper.Map<CustomerDto>(result);
 
             return CreatedAtRoute("GetCustomer", new { id = mappedDataOut.Id }, mappedDataOut);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]CustomerModel item)
+        public async Task<IActionResult> Put(int id, [FromBody]CustomerDto item)
         {
             if (item == null || item.Id != id)
             {

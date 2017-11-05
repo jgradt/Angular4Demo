@@ -8,7 +8,7 @@ namespace WebApiDemo.Data
     {
         public AutoMapperProfileConfiguration()
         {
-            CreateMap<Customer, CustomerModel>()
+            CreateMap<Customer, CustomerDto>()
                 .ForSourceMember(m => m.CreatedDate, opt => opt.Ignore())
                 .ForSourceMember(m => m.LastUpdatedDate, opt => opt.Ignore())
                 .ReverseMap();

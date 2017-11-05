@@ -1,6 +1,6 @@
 ﻿namespace WebApiDemo.Models
 {
-    public class CustomerModel
+    public class CustomerDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
