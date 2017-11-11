@@ -28,6 +28,8 @@ export class ValidationMessageComponent implements OnInit {
                 return `${pname} must be at least ${this.formControl.errors[key].requiredLength} characters`;
             } else if (key === 'maxlength') {
                 return `${pname} must be no longer than ${this.formControl.errors[key].requiredLength} characters`;
+            } else if (key === 'email') {
+                return `${pname} is not a valid email address`;
             }
 
             return 'Error';

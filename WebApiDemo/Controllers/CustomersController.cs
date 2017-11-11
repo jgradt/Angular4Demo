@@ -14,7 +14,7 @@ using WebApiDemo.Data.Repositories;
 
 namespace WebApiDemo.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/customers")]
     public class CustomersController : Controller
     {

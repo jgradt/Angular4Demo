@@ -14,7 +14,7 @@ namespace WebApiDemo.Data
                     .All()
                         .With(c => c.FirstName = Faker.Name.First())
                         .With(c => c.LastName = Faker.Name.Last())
-                        .With(c => c.Email = $"{c.FirstName.ToLower()[0]}.{c.LastName.ToLower()}@{Faker.Internet.DomainName()}.com")
+                        .With(c => c.Email = $"{c.FirstName.ToLower()[0]}.{c.LastName.ToLower()}@{Faker.Internet.DomainName()}")
                     .Build();
 
                 dbContext.Customers.AddRange(customers.ToArray());

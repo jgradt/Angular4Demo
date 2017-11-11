@@ -30,7 +30,8 @@ export class CustomerEditComponent implements OnInit {
         // initialize form
         this.mainForm = this.fb.group({
             firstName: ['', [Validators.required, Validators.maxLength(50)]],
-            lastName: ['', [Validators.required, Validators.maxLength(50)]]
+            lastName: ['', [Validators.required, Validators.maxLength(50)]],
+            email: ['', [Validators.email, Validators.maxLength(100)]]
         });
 
         // load data
@@ -45,7 +46,8 @@ export class CustomerEditComponent implements OnInit {
             let customer: ICustomer = {
                 id: 0,
                 firstName: '',
-                lastName: ''
+                lastName: '',
+                email: ''
             };
 
             this.onDataRetrieved(customer);
@@ -76,6 +78,7 @@ export class CustomerEditComponent implements OnInit {
         this.mainForm.patchValue({
             firstName: this.customer.firstName,
             lastName: this.customer.lastName,
+            email: this.customer.email
         });
 
         this.isLoading = false;
