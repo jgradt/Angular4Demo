@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApiDemo.Infrastructure
+namespace WebApiDemo.Data.Dto
 {
     public class PagedData<TData>
     {

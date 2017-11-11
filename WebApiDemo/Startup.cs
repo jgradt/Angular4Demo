@@ -12,6 +12,7 @@ using System.Text;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.ApplicationInsights.Extensibility;
+using FluentValidation.AspNetCore;
 
 namespace WebApiDemo
 {
@@ -36,7 +37,11 @@ namespace WebApiDemo
 
             services.AddDbContext<DemoDbContext>(opt => opt.UseInMemoryDatabase("demoDb"));
 
-            services.AddMvc();
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add(typeof(ValidatorActionFilter));
+            })
+            .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); }); ;
 
             services.AddAutoMapper();
 

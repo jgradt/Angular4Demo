@@ -7,6 +7,7 @@ using WebApiDemo.Infrastructure;
 using WebApiDemo.Data.Entities;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using WebApiDemo.Data.Dto;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -59,16 +60,6 @@ namespace WebApiDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CustomerDto item)
         {
-            if (item == null)
-            {
-                return BadRequest();
-            }
-
-            if(!ModelState.IsValid)
-            {
-                //TODO: what do I return here? 
-            }
-
             var mappedDataIn = mapper.Map<Customer>(item);
             var result = await customerRepository.AddAsync(mappedDataIn);
             var mappedDataOut = mapper.Map<CustomerDto>(result);
