@@ -12,6 +12,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using FluentValidation.AspNetCore;
 using WebApiDemo.Infrastructure.Configuration;
 using WebApiDemo.Data.Repositories;
+using WebApiDemo.Infrastructure.Errors;
 
 namespace WebApiDemo
 {
@@ -68,10 +69,12 @@ namespace WebApiDemo
         {
             loggerFactory.AddSerilogLogging(Configuration);
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
             app.UseAuthentication();
 
