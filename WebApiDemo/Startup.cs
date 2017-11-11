@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.ApplicationInsights.Extensibility;
 using FluentValidation.AspNetCore;
 using WebApiDemo.Infrastructure.Configuration;
+using WebApiDemo.Data.Repositories;
 
 namespace WebApiDemo
 {

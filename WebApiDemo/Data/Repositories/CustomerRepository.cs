@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using WebApiDemo.Data.Dto;
 
-namespace WebApiDemo.Data
+namespace WebApiDemo.Data.Repositories
 {
     //TODO: create base class
 

@@ -8,6 +8,7 @@ using WebApiDemo.Data.Entities;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using WebApiDemo.Data.Dto;
+using WebApiDemo.Data.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
