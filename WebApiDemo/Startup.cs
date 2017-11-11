@@ -28,28 +28,7 @@ namespace WebApiDemo
             var appSettings = Configuration.GetSection("App").Get<AppSettings>();
             services.Configure<AppSettings>(Configuration.GetSection("App"));
 
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = "JwtBearer";
-                options.DefaultChallengeScheme = "JwtBearer";
-            })
-            .AddJwtBearer("JwtBearer", jwtBearerOptions =>
-            {
-                jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Jwt.SecretKey)),
-
-                    ValidateIssuer = true,
-                    ValidIssuer = appSettings.Jwt.Issuer,
-
-                    ValidateAudience = true,
-                    ValidAudience = appSettings.Jwt.Audience,
-
-                    ValidateLifetime = true, //validate the expiration and not before values in the token
-
-                    ClockSkew = TimeSpan.FromMinutes(5) //5 minute tolerance for the expiration date
-                };
-            });
+            services.AddJwt(appSettings);
 
             services.AddCors();
 
@@ -59,7 +38,6 @@ namespace WebApiDemo
 
             services.AddAutoMapper();
 
-            // see: https://elanderson.net/2017/10/swagger-and-swashbuckle-with-asp-net-core-2/
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "WebApiDemo API", Version = "v1" });
@@ -105,15 +83,7 @@ namespace WebApiDemo
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiDemo V1");
             });
 
-            if (env.IsDevelopment())
-            {
-                // seed database with data
-                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    var dbContext = serviceScope.ServiceProvider.GetService<DemoDbContext>();
-                    DatabaseInitializer.AddDatabaseSeedData(dbContext);
-                }
-            }
+            app.SeedDatabase(env);
             
         }
     }
