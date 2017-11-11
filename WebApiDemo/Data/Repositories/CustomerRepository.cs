@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using WebApiDemo.Data.Dto;
+using WebApiDemo.Infrastructure.Errors;
 
 namespace WebApiDemo.Data.Repositories
 {
@@ -73,7 +74,7 @@ namespace WebApiDemo.Data.Repositories
             var existing = await dbContext.Customers.FindAsync(id);
             if(existing == null)
             {
-                return false;
+                throw new CrudDataException(CrudStatusCode.UpdateItemNotFound);
             }
 
             existing.FirstName = entity.FirstName;
@@ -87,6 +88,11 @@ namespace WebApiDemo.Data.Repositories
         public async Task<bool> DeleteAsync(int id)
         {
             var existing = await dbContext.Customers.FindAsync(id);
+            if (existing == null)
+            {
+                throw new CrudDataException(CrudStatusCode.DeleteItemNotFound);
+            }
+
             dbContext.Customers.Remove(existing);
             var result = await dbContext.SaveChangesAsync();
 
