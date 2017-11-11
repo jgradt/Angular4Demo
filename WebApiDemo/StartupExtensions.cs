@@ -8,7 +8,7 @@ using Serilog;
 using System;
 using System.Text;
 using WebApiDemo.Data;
-using WebApiDemo.Infrastructure;
+using WebApiDemo.Infrastructure.Configuration;
 
 namespace WebApiDemo
 {

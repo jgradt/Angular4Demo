@@ -7,12 +7,10 @@ using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.EntityFrameworkCore;
 using WebApiDemo.Infrastructure;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.ApplicationInsights.Extensibility;
 using FluentValidation.AspNetCore;
+using WebApiDemo.Infrastructure.Configuration;
 
 namespace WebApiDemo
 {

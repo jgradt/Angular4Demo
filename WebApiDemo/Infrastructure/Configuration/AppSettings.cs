@@ -1,4 +1,4 @@
-﻿namespace WebApiDemo.Infrastructure
+﻿namespace WebApiDemo.Infrastructure.Configuration
 {
     public class AppSettings
     {
