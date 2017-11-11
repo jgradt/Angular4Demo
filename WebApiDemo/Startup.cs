@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System;
 using Microsoft.Extensions.Logging;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace WebApiDemo
 {
@@ -61,7 +62,7 @@ namespace WebApiDemo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddSerilogLogging();
+            loggerFactory.AddSerilogLogging(Configuration);
 
             if (env.IsDevelopment())
             {
@@ -87,7 +88,11 @@ namespace WebApiDemo
             });
 
             app.SeedDatabase(env);
-            
+
+#if DEBUG
+            TelemetryConfiguration.Active.DisableTelemetry = true;
+#endif
+
         }
     }
 }

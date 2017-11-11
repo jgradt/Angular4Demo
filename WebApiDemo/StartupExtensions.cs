@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using WebApiDemo.Data;
 using WebApiDemo.Infrastructure;
 
@@ -59,19 +56,15 @@ namespace WebApiDemo
             }
         }
 
-        public static void AddSerilogLogging(this ILoggerFactory loggerFactory)
+        public static void AddSerilogLogging(this ILoggerFactory loggerFactory, IConfiguration configuration)
         {
-            // Attach the sink to the logger configuration
             var log = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.FromLogContext()
-                //just for local debug
-                .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {SourceContext} {Message}{NewLine}{Exception}", theme: AnsiConsoleTheme.Code)
-                .WriteTo.RollingFile(pathFormat: @"logs\log-{Date}.log", retainedFileCountLimit: 5)
+                .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
             loggerFactory.AddSerilog(log);
             Log.Logger = log;
+
         }
 
     }
