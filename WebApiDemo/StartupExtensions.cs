@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +48,8 @@ namespace WebApiDemo
         {
             if (env.IsDevelopment())
             {
+                Log.Information("*** Seeding database with data ***");
+
                 // seed database with data
                 using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
@@ -52,6 +57,21 @@ namespace WebApiDemo
                     DatabaseInitializer.AddDatabaseSeedData(dbContext);
                 }
             }
+        }
+
+        public static void AddSerilogLogging(this ILoggerFactory loggerFactory)
+        {
+            // Attach the sink to the logger configuration
+            var log = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .Enrich.FromLogContext()
+                //just for local debug
+                .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {SourceContext} {Message}{NewLine}{Exception}", theme: AnsiConsoleTheme.Code)
+                .WriteTo.RollingFile(pathFormat: @"logs\log-{Date}.log", retainedFileCountLimit: 5)
+                .CreateLogger();
+
+            loggerFactory.AddSerilog(log);
+            Log.Logger = log;
         }
 
     }
