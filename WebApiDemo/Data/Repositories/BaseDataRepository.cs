@@ -1,24 +1,36 @@
-﻿using WebApiDemo.Data.Entities;
-using WebApiDemo.Infrastructure;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using WebApiDemo.Data.Dto;
 using WebApiDemo.Infrastructure.Errors;
 using System;
+using System.Linq.Expressions;
 
 namespace WebApiDemo.Data.Repositories
 {
     public interface IBaseDataRepository<TEntity> 
         where TEntity: class, IDataEntity
     {
-        Task<List<TEntity>> GetAllAsync();
-        Task<PagedData<TEntity>> GetPagedAsync(int pageIndex, int pageSize);
+        List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>,
+            IOrderedQueryable<TEntity>> orderBy = null, string[] includeProperties = null);
+        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, 
+            IOrderedQueryable<TEntity>> orderBy = null, string[] includeProperties = null);
+        PagedData<TEntity> GetPaged(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string[] includeProperties = null);
+        Task<PagedData<TEntity>> GetPagedAsync(int pageIndex, int pageSize, Expression<Func<TEntity, bool>> filter = null, 
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string[] includeProperties = null);
+        TEntity GetById(int id);
         Task<TEntity> GetByIdAsync(int id);
+        int GetCount(Expression<Func<TEntity, bool>> filter = null);
+        Task<int> GetCountAsync(Expression<Func<TEntity, bool>> filter = null);
+        bool GetExists(Expression<Func<TEntity, bool>> filter = null);
+        Task<bool> GetExistsAsync(Expression<Func<TEntity, bool>> filter = null);
         Task<TEntity> AddAsync(TEntity entity);
         Task<bool> UpdateAsync(int id, TEntity entity);
         Task<bool> DeleteAsync(int id);
+        int Save();
+        Task<int> SaveAsync();
     }
 
     public class BaseDataRepository<TEntity> : IBaseDataRepository<TEntity> 
@@ -31,28 +43,117 @@ namespace WebApiDemo.Data.Repositories
             this.dbContext = demoDbContext;
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        protected virtual IQueryable<TEntity> GetQueryable(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            string[] includeProperties = null,
+            int? skip = null,
+            int? take = null)
         {
-            return await dbContext.Set<TEntity>().ToListAsync();
+            IQueryable<TEntity> query = dbContext.Set<TEntity>();
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties ?? new string[] { })
+            {
+                if(!string.IsNullOrWhiteSpace(includeProperty.Trim()))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            if (skip.HasValue)
+            {
+                query = query.Skip(skip.Value);
+            }
+
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query;
         }
 
-        public async Task<PagedData<TEntity>> GetPagedAsync(int pageIndex, int pageSize)
+        public int GetCount(Expression<Func<TEntity, bool>> filter = null)
         {
-            var query = dbContext.Set<TEntity>();
+            return GetQueryable(filter).Count();
+        }
 
-            var paged = query
-                .Skip(pageIndex * pageSize).Take(pageSize);
+        public async Task<int> GetCountAsync(Expression<Func<TEntity, bool>> filter = null)
+        {
+            return await GetQueryable(filter).CountAsync();
+        }
 
-            var totalCount = await query.CountAsync();
+        public bool GetExists(Expression<Func<TEntity, bool>> filter = null)
+        {
+            return GetQueryable(filter).Any();
+        }
+
+        public async Task<bool> GetExistsAsync(Expression<Func<TEntity, bool>> filter = null)
+        {
+            return await GetQueryable(filter).AnyAsync();
+        }
+
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>,
+            IOrderedQueryable<TEntity>> orderBy = null, string[] includeProperties = null)
+        {
+            return GetQueryable(filter: filter, orderBy: orderBy, includeProperties: includeProperties, skip: null, take: null).ToList();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, 
+            IOrderedQueryable<TEntity>> orderBy = null, string[] includeProperties = null)
+        {
+            return await GetQueryable(filter: filter, orderBy: orderBy, includeProperties: includeProperties, skip: null, take: null).ToListAsync();
+        }
+
+        public PagedData<TEntity> GetPaged(int pageIndex, int pageSize,
+            Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            string[] includeProperties = null)
+        {
+            var query = GetQueryable(filter: filter, orderBy: orderBy, includeProperties: includeProperties, skip: (pageIndex * pageSize), take: pageSize);
+
+            var totalCount = GetCount(filter);
             var data = new PagedData<TEntity>() //TODO: need constructor
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 TotalItems = totalCount,
-                Items = await paged.ToListAsync()
+                Items = query.ToList()
             };
 
             return data;
+        }
+
+        public async Task<PagedData<TEntity>> GetPagedAsync(int pageIndex, int pageSize, 
+            Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            string[] includeProperties = null)
+        {
+            var query = GetQueryable(filter: filter, orderBy: orderBy, includeProperties: includeProperties, skip: (pageIndex * pageSize), take: pageSize);
+
+            var totalCount = await GetCountAsync(filter);
+            var data = new PagedData<TEntity>() //TODO: need constructor
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalItems = totalCount,
+                Items = await query.ToListAsync()
+            };
+
+            return data;
+        }
+
+        public TEntity GetById(int id)
+        {
+            return dbContext.Set<TEntity>().Find(id);
         }
 
         public async Task<TEntity> GetByIdAsync(int id)
@@ -60,19 +161,19 @@ namespace WebApiDemo.Data.Repositories
             return await dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             entity.Id = dbContext.Set<TEntity>().Max(o => o.Id) + 1; //TODO: this is a hack for the in-memory database
             entity.CreatedDate = DateTime.Now;
             entity.LastUpdatedDate = DateTime.Now;
 
             dbContext.Set<TEntity>().Add(entity);
-            var result = await dbContext.SaveChangesAsync();
+            var result = await dbContext.SaveChangesAsync(); //TODO: move this
 
             return entity;
         }
 
-        public async Task<bool> UpdateAsync(int id, TEntity entity)
+        public virtual async Task<bool> UpdateAsync(int id, TEntity entity)
         {
             var existing = await dbContext.Set<TEntity>().FindAsync(id);
             if (existing == null)
@@ -83,7 +184,7 @@ namespace WebApiDemo.Data.Repositories
             SetDataForUpdate(entity, existing);
             entity.LastUpdatedDate = DateTime.Now;
 
-            var result = await dbContext.SaveChangesAsync();
+            var result = await dbContext.SaveChangesAsync(); //TODO: move this
 
             return (result > 0);
         }
@@ -97,14 +198,25 @@ namespace WebApiDemo.Data.Repositories
             }
 
             dbContext.Set<TEntity>().Remove(existing);
-            var result = await dbContext.SaveChangesAsync();
+            var result = await dbContext.SaveChangesAsync(); //TODO: move this
 
             return (result > 0);
+        }
+
+        public virtual int Save()
+        {
+            return dbContext.SaveChanges();
+        }
+
+        public virtual async Task<int> SaveAsync()
+        {
+           return await dbContext.SaveChangesAsync();
         }
 
 
         public virtual void SetDataForUpdate(TEntity sourceEntity, TEntity destinationEntity)
         {
+            //TODO: figure out how to set all properties by default
         }
     }
 }

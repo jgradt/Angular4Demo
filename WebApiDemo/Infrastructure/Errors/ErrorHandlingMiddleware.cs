@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,8 @@ namespace WebApiDemo.Infrastructure.Errors
             }
             else
             {
+                Log.Error(exception, "Uncaught exception");
+
                 var errors = new Dictionary<string, string[]>();
 
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

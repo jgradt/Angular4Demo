@@ -62,7 +62,8 @@ namespace WebApiDemo.Controllers
         public async Task<IActionResult> Create([FromBody] CustomerDto item)
         {
             var mappedDataIn = mapper.Map<Customer>(item);
-            var result = await customerRepository.AddAsync(mappedDataIn);
+            var result =  await customerRepository.AddAsync(mappedDataIn);
+            await customerRepository.SaveAsync();
             var mappedDataOut = mapper.Map<CustomerDto>(result);
 
             return CreatedAtRoute("GetCustomer", new { id = mappedDataOut.Id }, mappedDataOut);
@@ -79,6 +80,7 @@ namespace WebApiDemo.Controllers
             var mappedData = mapper.Map<Customer>(item);
 
             await customerRepository.UpdateAsync(id, mappedData);
+            await customerRepository.SaveAsync();
 
             return new NoContentResult();
         }
@@ -87,6 +89,7 @@ namespace WebApiDemo.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await customerRepository.DeleteAsync(id);
+            await customerRepository.SaveAsync();
 
             return new NoContentResult();
         }
