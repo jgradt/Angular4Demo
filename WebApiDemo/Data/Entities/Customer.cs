@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebApiDemo.Data.Entities
 {
@@ -11,5 +12,7 @@ namespace WebApiDemo.Data.Entities
         public string Email { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }
+
+        public List<Order> Orders { get; set; }
     }
 }
