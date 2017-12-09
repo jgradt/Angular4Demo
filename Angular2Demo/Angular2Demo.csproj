@@ -37,6 +37,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ClientApp\app\components\order\customer-order-list.component.html" />
+    <None Include="ClientApp\app\components\order\customer-order-list.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\customer\customer-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\shared\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\data-entities\index.ts" />

@@ -1,0 +1,33 @@
+<h1>Customer Details</h1>
+
+<p *ngIf="isLoading"><em>Loading...</em></p>
+
+<div class="row" *ngIf="customer">
+
+    <div class="row col-sm-10">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <label class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-4">
+                    {{ customer.firstName }} {{ customer.lastName }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-sm-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">Orders</div>
+            <div class="panel-body">
+                <app-customer-order-list [customerId]="customer.id"></app-customer-order-list>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <button type="button" class="btn btn-default" [routerLink]="['/customers']">Back</button>
+    </div>
+</div>

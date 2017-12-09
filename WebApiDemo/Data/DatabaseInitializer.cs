@@ -33,7 +33,7 @@ namespace WebApiDemo.Data
             {
                 var rndGenerator = new RandomGenerator();
 
-                var orders = Builder<Data.Entities.Order>.CreateListOfSize(300)
+                var orders = Builder<Data.Entities.Order>.CreateListOfSize(500)
                     .All()
                         .With(o => o.Customer = Pick<Customer>.RandomItemFrom(customerList))
                         .With(o => o.OrderDate = DateTime.Today.AddDays(-rndGenerator.Next(0, 60)))

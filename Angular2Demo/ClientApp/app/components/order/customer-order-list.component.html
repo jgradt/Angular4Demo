@@ -1,0 +1,32 @@
+<div *ngIf="data?.items">
+
+    <table class='table table-striped table-hover table-condensed x-table-smaller-text'>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Order Date</th>
+                <th>Delivered Date</th>
+                <th>Status</th>
+                <th>Total Due</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of data.items">
+                <td>{{ order.id }}</td>
+                <td>{{ order.orderDate | date:'shortDate' }}</td>
+                <td>{{ order.deliveredDate | date:'shortDate' }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.totalDue | currency:'USD':true:'1.2-2' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-left:10px;" *ngIf="data.totalItems > 5">
+        <div class="row">
+            <pagination [boundaryLinks]="true" [totalItems]="data.totalItems" [(ngModel)]="currentPage" [maxSize]="5" [itemsPerPage]="5" class="pagination-sm"
+                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (numPages)="totalPages = $event" (pageChanged)="pageChanged($event)"></pagination>
+        </div>
+        <div class="row">Page: {{currentPage}} / {{totalPages}}</div>
+    </div>
+
+</div>

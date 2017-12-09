@@ -18,7 +18,6 @@ export class CustomerListComponent implements OnInit {
 
     ngOnInit(): void {
         this.isLoading = true;
-
         this.loadData();
     }
 
@@ -27,15 +26,18 @@ export class CustomerListComponent implements OnInit {
             this.data = result;
             this.currentPage = this.data.pageIndex + 1;
             this.isLoading = false;
-        }, error => console.error(error));
+        }, error => this.handleError(error));
     }
 
     pageChanged(event: any): void {
-        //console.log('Page changed to: ' + event.page);
-        //console.log('Number items per page: ' + event.itemsPerPage);
 
         this.currentPage = event.page;
         this.loadData();
+    }
+
+    handleError(error: any) {
+        //this.errorMessage = error;
+        this.isLoading = false;
     }
 
 }

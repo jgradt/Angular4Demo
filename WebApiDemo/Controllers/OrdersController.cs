@@ -14,7 +14,7 @@ using WebApiDemo.Data.Repositories;
 
 namespace WebApiDemo.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/orders")]
     public class OrdersController : Controller
     {
@@ -30,9 +30,24 @@ namespace WebApiDemo.Controllers
         [HttpGet]
         public async Task<PagedData<OrderDto>> Get(int pageIndex = 0, int pageSize = 10)
         {
-            //System.Threading.Thread.Sleep(1500);
-
             var data = await orderRepository.GetPagedAsync(pageIndex, pageSize);
+            var mappeData = new PagedData<OrderDto>()
+            {
+                PageIndex = data.PageIndex,
+                PageSize = data.PageSize,
+                TotalItems = data.TotalItems,
+                Items = mapper.Map<List<OrderDto>>(data.Items)
+            };
+
+            return mappeData;
+        }
+
+        [HttpGet]
+        [Route("~/api/customers/{customerId:int}/orders", Name = "GetOrdersByCustomerId")]
+        public async Task<PagedData<OrderDto>> GetByCustomerId(int customerId, int pageIndex = 0, int pageSize = 10)
+        {
+
+            var data = await orderRepository.GetPagedAsync(pageIndex, pageSize, filter: o => o.CustomerId == customerId);
             var mappeData = new PagedData<OrderDto>()
             {
                 PageIndex = data.PageIndex,

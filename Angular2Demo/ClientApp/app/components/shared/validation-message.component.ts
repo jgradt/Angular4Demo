@@ -13,7 +13,7 @@ export class ValidationMessageComponent implements OnInit {
     @Input() propertyName: string;
 
     ngOnInit(): void {
-        console.log('init control validator');
+        //console.log('init control validator');
     }
 
     errMsg(): any {
