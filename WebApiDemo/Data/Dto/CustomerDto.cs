@@ -32,6 +32,7 @@ namespace WebApiDemo.Models
             CreateMap<Customer, CustomerDto>()
                 .ForSourceMember(m => m.CreatedDate, opt => opt.Ignore())
                 .ForSourceMember(m => m.LastUpdatedDate, opt => opt.Ignore())
+                .ForSourceMember(m => m.Orders, opt => opt.Ignore())
                 .ReverseMap();
         }
 

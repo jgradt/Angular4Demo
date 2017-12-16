@@ -35,7 +35,7 @@ export class CustomerEditComponent implements OnInit {
         });
 
         // load data
-        let id = +(this.route.snapshot.paramMap.get('id') || -1);
+        let id = +(this.route.snapshot.paramMap.get('id') || 0);
         this.loadCustomer(id);
     }
 

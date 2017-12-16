@@ -2,7 +2,7 @@
 
 <p *ngIf="isLoading"><em>Loading...</em></p>
 
-<div><button class="btn btn-sm" [routerLink]="['/customers/0']">New</button></div>
+<div><button class="btn btn-sm" [routerLink]="['/customers/add']">New</button></div>
 <div *ngIf="data?.items">
 
     <table class='table table-striped table-hover table-condensed x-table-smaller-text'>
@@ -21,7 +21,8 @@
                 <td>{{ customer.firstName }}</td>
                 <td>{{ customer.lastName }}</td>
                 <td>{{ customer.email }}</td>
-                <td><a [routerLink]="['/customers', customer.id]">Edit</a></td>
+                <td><a [routerLink]="['/customers', customer.id, 'edit']">Edit</a> |
+                    <a [routerLink]="['/customers', customer.id, 'details']">Details</a></td>
             </tr>
         </tbody>
     </table>

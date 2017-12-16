@@ -60,6 +60,7 @@ namespace WebApiDemo
 
             //register types for DI
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSingleton<AppConfig, AppConfig>();
 
         }

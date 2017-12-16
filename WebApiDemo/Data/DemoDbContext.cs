@@ -11,7 +11,16 @@ namespace WebApiDemo.Data
         }
 
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         //TODO: set last saved date on save
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .OnDelete(DeleteBehavior.Cascade); ;
+        }
     }
 }
