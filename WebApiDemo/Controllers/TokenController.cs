@@ -51,7 +51,7 @@ namespace WebApiDemo.Controllers
                 audience: appConfig.Settings.Jwt.Audience,
                 claims: claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(2),
+                expires: DateTime.Now.AddMinutes(20),
                 signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256)
             );
 
