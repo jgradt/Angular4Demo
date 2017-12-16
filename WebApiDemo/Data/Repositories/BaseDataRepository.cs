@@ -27,12 +27,13 @@ namespace WebApiDemo.Data.Repositories
         bool GetExists(Expression<Func<TEntity, bool>> filter = null);
         Task<bool> GetExistsAsync(Expression<Func<TEntity, bool>> filter = null);
         Task<TEntity> AddAsync(TEntity entity);
-        Task<bool> UpdateAsync(int id, TEntity entity);
-        Task<bool> DeleteAsync(int id);
+        Task UpdateAsync(int id, TEntity entity);
+        Task DeleteAsync(int id);
         int Save();
         Task<int> SaveAsync();
     }
 
+    /* Some of this code is based on or copied from a generic repository that can be found here:  https://cpratt.co/truly-generic-repository/ */
     public class BaseDataRepository<TEntity> : IBaseDataRepository<TEntity> 
         where TEntity: class, IDataEntity
     {
@@ -168,12 +169,11 @@ namespace WebApiDemo.Data.Repositories
             entity.LastUpdatedDate = DateTime.Now;
 
             dbContext.Set<TEntity>().Add(entity);
-            var result = await dbContext.SaveChangesAsync(); //TODO: move this
 
             return entity;
         }
 
-        public virtual async Task<bool> UpdateAsync(int id, TEntity entity)
+        public virtual async Task UpdateAsync(int id, TEntity entity)
         {
             var existing = await dbContext.Set<TEntity>().FindAsync(id);
             if (existing == null)
@@ -183,13 +183,9 @@ namespace WebApiDemo.Data.Repositories
 
             SetDataForUpdate(entity, existing);
             entity.LastUpdatedDate = DateTime.Now;
-
-            var result = await dbContext.SaveChangesAsync(); //TODO: move this
-
-            return (result > 0);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var existing = await dbContext.Set<TEntity>().FindAsync(id);
             if (existing == null)
@@ -198,9 +194,6 @@ namespace WebApiDemo.Data.Repositories
             }
 
             dbContext.Set<TEntity>().Remove(existing);
-            var result = await dbContext.SaveChangesAsync(); //TODO: move this
-
-            return (result > 0);
         }
 
         public virtual int Save()

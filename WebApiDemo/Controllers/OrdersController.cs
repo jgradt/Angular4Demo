@@ -31,7 +31,7 @@ namespace WebApiDemo.Controllers
         public async Task<PagedData<OrderDto>> Get(int pageIndex = 0, int pageSize = 10)
         {
             var data = await orderRepository.GetPagedAsync(pageIndex, pageSize);
-            var mappeData = new PagedData<OrderDto>()
+            var mappedData = new PagedData<OrderDto>()
             {
                 PageIndex = data.PageIndex,
                 PageSize = data.PageSize,
@@ -39,7 +39,7 @@ namespace WebApiDemo.Controllers
                 Items = mapper.Map<List<OrderDto>>(data.Items)
             };
 
-            return mappeData;
+            return mappedData;
         }
 
         [HttpGet]
@@ -48,7 +48,7 @@ namespace WebApiDemo.Controllers
         {
 
             var data = await orderRepository.GetPagedAsync(pageIndex, pageSize, filter: o => o.CustomerId == customerId);
-            var mappeData = new PagedData<OrderDto>()
+            var mappedData = new PagedData<OrderDto>()
             {
                 PageIndex = data.PageIndex,
                 PageSize = data.PageSize,
@@ -56,7 +56,7 @@ namespace WebApiDemo.Controllers
                 Items = mapper.Map<List<OrderDto>>(data.Items)
             };
 
-            return mappeData;
+            return mappedData;
         }
 
         [HttpGet("{id}", Name = "GetOrder")]

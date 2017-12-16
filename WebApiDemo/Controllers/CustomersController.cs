@@ -30,10 +30,8 @@ namespace WebApiDemo.Controllers
         [HttpGet]
         public async Task<PagedData<CustomerDto>> Get(int pageIndex = 0, int pageSize = 10)
         {
-            //System.Threading.Thread.Sleep(1500);
-
             var data = await customerRepository.GetPagedAsync(pageIndex, pageSize);
-            var mappeData = new PagedData<CustomerDto>()
+            var mappedData = new PagedData<CustomerDto>()
             {
                 PageIndex = data.PageIndex,
                 PageSize = data.PageSize,
@@ -41,7 +39,7 @@ namespace WebApiDemo.Controllers
                 Items = mapper.Map<List<CustomerDto>>(data.Items)
             };
 
-            return mappeData;
+            return mappedData;
         }
 
         [HttpGet("{id}", Name = "GetCustomer")]
