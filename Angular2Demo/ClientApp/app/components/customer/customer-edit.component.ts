@@ -6,8 +6,7 @@ import { ICustomer } from '../../data-entities/index'
 import { CustomerService } from "../../services/index";
 
 @Component({
-    templateUrl: './customer-edit.component.html',
-    styleUrls: ['./forms.css']
+    templateUrl: './customer-edit.component.html'
 })
 export class CustomerEditComponent implements OnInit {
 

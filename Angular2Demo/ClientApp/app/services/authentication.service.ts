@@ -18,7 +18,7 @@ export class AuthenticationService {
     }
 
     logout() {
-        // remove user from local storage to log user out
+        // remove auth token from local storage to log user out
         localStorage.removeItem(this.config.authTokenName);
     }
 }

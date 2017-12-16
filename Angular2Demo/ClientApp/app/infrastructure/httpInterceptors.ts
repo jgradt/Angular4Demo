@@ -24,28 +24,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 }
 
-//// Remove when https://github.com/angular/angular/pull/18466 gets merged.
-//@Injectable()
-//export class WA18396Interceptor implements HttpInterceptor {
-//    constructor() { }
-
-//    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-//        if (req.responseType == 'json') {
-//            req = req.clone({ responseType: 'text' });
-
-//            return next.handle(req).map(response => {
-//                if (response instanceof HttpResponse) {
-//                    response = response.clone<any>({ body: JSON.parse(response.body) });
-//                }
-
-//                return response;
-//            });
-//        }
-
-//        return next.handle(req);
-//    }
-//}
-
 @Injectable()
 export class TimingInterceptor implements HttpInterceptor {
 

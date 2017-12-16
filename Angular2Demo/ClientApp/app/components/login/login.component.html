@@ -5,13 +5,16 @@
             Loading...
         </div>
 
-        <div *ngIf="model" [hidden]="submitted" style="margin: 20px;">
+        <div *ngIf="model" [hidden]="submitted" style="margin: 20px;" class="pull-left">
+
+            <div class="alert alert-info" role="alert">
+                Enter any username and password of 3 characters or more
+            </div>
 
             <div class="form-group form-group-sm row" [ngClass]="{'has-error': mainForm.get('username').invalid}">
                 <label for="username" class="col-md-4 control-label">User Name:</label>
                 <div class="col-md-8">
                     <input class="form-control" formControlName="username" />
-                    <!--<control-validator [for]="mainForm.get('username')"></control-validator>-->
                 </div>
             </div>
 
@@ -19,12 +22,11 @@
                 <label for="password" class="col-md-4 control-label">Password:</label>
                 <div class="col-md-8">
                     <input class="form-control" formControlName="password" />
-                    <!--<control-validator [for]="mainForm.get('password')"></control-validator>-->
                 </div>
             </div>
 
-            <div class="row">
-                <button type="submit" class="btn btn-primary pull-right">Login</button>
+            <div class="row col-lg-offset-4">
+                <button type="submit" class="btn btn-primary">Login</button>
             </div>
 
         </div>
