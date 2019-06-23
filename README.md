@@ -8,6 +8,8 @@ This repository contains code for a website that queries a backend service.
 
 A Visual Studio Solution is included along with projects for the client-side angular website (Angular4Demo), the REST services (WebApiDemo), and unit tests for the services (WebApiDemo.UnitTests).  The site and services provide a demonstration for a simple website displaying customers and orders.  
 
+A more thorough explanation of the code can be found [here](https://jgradt.github.io/blog/repos/angular4demo/part1.html).
+
 Some of the technologies involved include:
 - [Angular](https://angular.io/)
 - [Typescript](https://www.typescriptlang.org/)
